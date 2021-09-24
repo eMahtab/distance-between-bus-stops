@@ -1,7 +1,7 @@
 # Distance between bus stops
 
 
-## Dijkstra Implementation : Memory Limit Exceeded
+## Dijkstra Implementation 1 : Memory Limit Exceeded
 ```java
 class Solution {
     public int distanceBetweenBusStops(int[] distance, int start, int destination) {
@@ -41,6 +41,49 @@ class Solution {
                     }
                 }
             }
+        }
+        return -1;
+    }
+}
+```
+## Dijkstra Implementation 2 : Without using Adjacency Matrix
+```java
+class Solution {
+    public int distanceBetweenBusStops(int[] distance, int start, int destination) {
+        if(start == destination)
+            return 0;
+        int n = distance.length;
+        int[] shortestDistances = new int[n];
+        Arrays.fill(shortestDistances, Integer.MAX_VALUE);
+        shortestDistances[start] = 0;
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>((v1, v2) -> v1[1] - v2[1]);
+        minHeap.offer(new int[]{start, 0});
+        
+        boolean[] visited = new boolean[n];
+        
+        while(!minHeap.isEmpty()) {
+            int[] busStop = minHeap.poll();
+            if(busStop[0] == destination)
+                return busStop[1];
+            if(visited[busStop[0]])
+                continue;
+            visited[busStop[0]] = true;
+            // check neighboring stops
+            int nextNeighbor = (busStop[0] + 1) % n;
+            int prevNeighbor = busStop[0] == 0 ? n-1 : busStop[0] - 1;
+            // check next neighbor
+            int d = distance[busStop[0]];
+            if(busStop[1] + d < shortestDistances[nextNeighbor]) {
+                shortestDistances[nextNeighbor] = busStop[1] + d;
+                minHeap.offer(new int[]{nextNeighbor , shortestDistances[nextNeighbor]});
+            }
+            // check previous neighbor
+            d = distance[prevNeighbor];
+            if(busStop[1] + d < shortestDistances[prevNeighbor]) {
+                shortestDistances[prevNeighbor] = busStop[1] + d;
+                minHeap.offer(new int[]{prevNeighbor , shortestDistances[prevNeighbor]});
+            }
+            
         }
         return -1;
     }
