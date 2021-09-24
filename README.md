@@ -7,7 +7,7 @@ The bus goes along both directions i.e. clockwise and counterclockwise.
 
 Return the shortest distance between the given start and destination stops.
 
-
+![Distance between bus stops](example.JPG)
 
 ## Dijkstra Implementation 1 : Memory Limit Exceeded
 ```java
